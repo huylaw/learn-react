@@ -1,0 +1,17 @@
+@use "../../assets/style/main.scss";
+
+$color-bg-home: #ffffff;
+
+.container-home {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 15px 15px 0;
+
+    .view-home {
+        display: flex;
+        flex-direction: column;
+        background-color: $color-bg-home;
+        border-radius: 4px;
+        height: calc(100vh - 122px);
+    }
+}

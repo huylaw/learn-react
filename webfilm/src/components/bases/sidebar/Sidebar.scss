@@ -1,0 +1,50 @@
+@use "../../../assets/style/main.scss";
+
+$color-text: #a8a8a8;
+$color-text-active: #ffffff;
+$color-bg-sidebar: #020a01;
+$color-bg-menu: #545A55;
+$color-active: #3e3f3f;
+$font-size: 13px;
+
+.container-sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: $color-bg-sidebar;
+    font-size: $font-size;
+
+    .icon-sidebar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 48px;
+        color: #ffffff;
+        // padding-left: 10px;
+        margin-bottom: 10px;
+        img {
+            width: 48px;
+        }
+    }
+}
+
+a.active {
+    color: $color-text-active;
+    background-color: $color-active;
+    font-weight: bolder;
+}
+
+a:hover {
+    background-color: $color-active;
+}
+
+.nav {
+    color: $color-text;
+    display: flex;
+    align-items: center;
+    height: 38px;
+}
+
+.material-icons {
+    margin: 0 10px;
+}
