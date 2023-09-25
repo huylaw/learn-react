@@ -13,6 +13,7 @@ $color-shadow-header: rgba(1, 22, 30, 0.16);
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
+        transition: 0.5s;
 
         .header {
             background-color: #ffffff;

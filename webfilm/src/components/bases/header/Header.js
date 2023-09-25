@@ -3,11 +3,16 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import "./Header.scss";
 
-export default function Header() {
+export default function Header(props) {
+
+    const smallSidebar = () => {
+        props.parentCallback();
+    } 
+
     return(
         <div className="container-header">
             <div className="head1">
-                <MenuIcon/>
+                <MenuIcon onClick={ smallSidebar } style={{cursor: 'pointer'}}/>
                 <h3>INTS</h3>
             </div>
             <div className="head2">

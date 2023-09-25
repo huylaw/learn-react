@@ -13,6 +13,7 @@ $font-size: 13px;
     height: 100%;
     background-color: $color-bg-sidebar;
     font-size: $font-size;
+    transition: 0.5s;
 
     .icon-sidebar {
         display: flex;
@@ -23,7 +24,7 @@ $font-size: 13px;
         // padding-left: 10px;
         margin-bottom: 10px;
         img {
-            width: 48px;
+            width: 40px;
         }
     }
 }

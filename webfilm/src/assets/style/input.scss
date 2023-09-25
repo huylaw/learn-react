@@ -1,0 +1,33 @@
+@use './variables.scss';
+
+.container-input {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+    gap: 4px;
+    label {
+        font-weight: 600;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        padding-bottom: 2px;
+    }
+
+    input {
+        border-radius: variables.$border-radius;
+        height: 26px;
+        padding: 0 12px 0 10px;
+        box-sizing: border-box;
+        border: 1px solid variables.$color-border-input;
+
+        &:focus {
+            border-color: variables.$color-primary;
+        }
+
+        &::placeholder {
+            font-style: italic;
+            font-size: 13px;
+        }
+    }
+}
