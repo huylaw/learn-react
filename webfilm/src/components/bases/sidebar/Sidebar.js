@@ -10,6 +10,7 @@ export default function Sidebar(props) {
     const listMenu = [
         { path: '/', name: 'Home', icon: 'home', element: '<Home/>' },
         { path: '/about', name: 'About', icon: 'ac_unit', element: '<About/>' },
+        { path: '/user', name: 'User', icon: 'person', element: '<User/>' }
     ];
 
     const menu1 = listMenu.map((item, index) => 

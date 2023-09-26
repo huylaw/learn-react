@@ -1,0 +1,9 @@
+$color-bg: #00000085;
+
+.container-auth-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $color-bg;
+    height: 100vh;
+}

@@ -3,13 +3,14 @@ import useModal from "../../components/bases/modal/useModal";
 import BreadCrum from "../../components/items/breadcrum/BreadCrum";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { useEffect, useRef, useState } from "react";
-import ValidateForm from "../../utils/ValidateForm";
-
+import { Required, Pattern, MinLength, MaxLength } from "../../utils/ValidateForm";
 import "./Home.scss";
 import HInput from "../../components/bases/input/HInput";
+import { useForm } from "react-hook-form";
 
 export default function Home(){
     const {isVisible, toggle} = useModal(); // modal
+
     const [currentItem, setCurrentItem] = useState({
         id: "",
         name: "Lee Gia Huy",
@@ -28,6 +29,17 @@ export default function Home(){
         bankName: "",
         branch: ""
     });
+    
+    const { register, watch, handleSubmit, formState: {errors} } = useForm({
+        mode: "onSubmit", // báo lỗi validate form khi submit
+        defaultValues: {}, // giá trị mặc định ban đầu của form
+        criteriaMode: "firstError", // validate tất cả các lỗi
+        reValidateMode: "onBlur", // validate lại khi thay đổi dữ liệu trong 1 ô input 
+    });
+
+    const watchName = watch("name");
+
+
 
     const handleChange = (e) => {
         setCurrentItem((i) => ({
@@ -42,19 +54,24 @@ export default function Home(){
             field: 'id', 
             label: 'Mã nhân viên', 
             size: 150,
-            required: true
+            type: 'text',
+            required: true,
+            regex: /\d+/,
+            minLength: 6,
+            maxLength: 20
         },
         {   // 1
             field: 'name', 
             label: 'Tên nhân viên',
             size: 242,
             required: true,
-
+            type: 'text',
         },
         {   // 2
             field: 'gender', 
             label: 'Giới tính',
-            size: 267
+            size: 267,
+            type: 'radio'
         },
         {   // 3
             field: 'birthday', 
@@ -65,58 +82,69 @@ export default function Home(){
         {   // 4
             field: 'cmnd', 
             label: 'Số CMND',
-            size: 267
+            size: 267,
+            type: 'text',
         },
         {   // 5
             field: 'dateCMND',
             label: 'Ngày cấp',
             type: 'date',
-            size: 175
+            size: 175,
         },
         {   // 6
             field: 'prefix', 
             label: 'Chức danh',
             size: 400,
+            type: 'text',
         },
         {   // 7
             field: 'unitName', 
             label: 'Tên đơn vị',
             size: 400,
-            required: true
+            required: true,
+            type: 'select'
         },
         {   // 8
             field: 'issuedBy',
             label: 'Nơi cấp',
             size: 450,
+            type: 'text',
         },
         {   // 9
             field: 'address',
             label: 'Địa chỉ',
-            size: "100%"
+            size: "100%",
+            type: 'text',
         },
         {   // 10
             field: 'phone',
             label: 'Đt di động',
+            type: 'text',
         },
         {   // 11
             field: 'localPhone',
             label: 'Đt cố định',
+            type: 'text',
         },
         {   // 12
             field: 'email',
             label: 'Email',
+            type: 'text',
         },
         {   // 13
             field: 'stk', 
             label: 'Số tài khoản',
+            type: 'text',
         },
         {   // 14
             field: 'bankName', 
             label: 'Tên ngân hàng',
+            type: 'text',
         },
         {   // 15
             field: 'branch', 
             label: 'Chi nhánh tk ngân hàng',
+            type: 'text',
         },
         {   // 16
             field: 'action', 
@@ -125,41 +153,46 @@ export default function Home(){
     ];
     
     // lấy list danh sách để tạo form 
-    const info = columns.filter((i) => i.field !== 'action');
+    const info = columns.filter((i) => i.field !== 'action' && i.type !== 'radio' && i.type !== 'select');
+    const radioGender = columns.filter((i) => i.field !== 'action' && i.type === 'radio');
     
     // map input
     const listInput = info.map((i) => 
-        <HInput
-            key={i.field}
-            name={i.field}
-            label={i.label}
-            value={currentItem[i.field]}
-            type={i.type}
-            required={i.required}
-            placeholder={i.label}
-            onChange={handleChange}
-            size={i.size}
-        />
+        <div 
+            className="container-input"
+            style={{ width: i.size }}
+        >
+            <label>
+                {i.label}
+                <span style={{ color: "red" }}>
+                    {i.required === true ? "*" : ''}
+                </span>
+            </label>
+            <input 
+                type={i.type}
+                placeholder={i.label}
+                {...register(i.field, {
+                    required: Required(i.required, i.label, i.msg),
+                    pattern: Pattern(i.regex, i.label),
+                    minLength: MinLength(i.minLength, i.label),
+                    maxLength: MaxLength(i.maxLength, i.label),
+                    onChange: handleChange,
+                })}
+                value={currentItem[i.field]}
+            />
+            <p className="error-msg">{errors[i.field]?.message}</p>
+        </div>
     );
 
-    // validate form
-    const validateForm = () => {
-        let errData = {
-            field: '',
-            error: false,
-            message: ''
-        };
+    const inputGender = radioGender.map((i) => 
+        <div>
 
-        const {id, name, } = currentItem;
-    };
-    
-    // submit form 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(currentItem);
-        // ValidateForm(currentItem);
-        // toggle();
-    };
+        </div>
+    );
+
+    const onSubmit = data => {
+        console.log(data);
+    }
     
     return(
         <div className="container-home">
@@ -172,7 +205,7 @@ export default function Home(){
                     <button className="btn-primary" onClick={toggle}>Thêm mới</button>
                 </div>
                 <Modal isVisible={isVisible} hide={toggle} title="Thông tin cá nhân">
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div style={{
                             display: "flex", alignItems: "center", boxSizing: "border-box"
                         }}>
@@ -183,7 +216,7 @@ export default function Home(){
                                     {listInput[0]}
                                     {listInput[1]}
                                 </div>
-                                <div>{listInput[7]}</div>
+                                {/* <div>{listInput[7]}</div> */}
                                 <div>{listInput[6]}</div>
                             </div>
                             <div style={{ width: "100%", boxSizing: "border-box" }}>
@@ -191,7 +224,7 @@ export default function Home(){
                                     display: "flex", alignItems: "center", gap: "8px"
                                 }}>
                                     {listInput[3]}
-                                    {listInput[2]}
+                                    {/* {listInput[2]} */}
                                 </div>
                                 <div style={{
                                     display: "flex", alignItems: "center", gap: "8px"
